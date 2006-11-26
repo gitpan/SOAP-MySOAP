@@ -10,11 +10,11 @@ SOAP::MySOAP - An extremely basic SOAP client module
 
 =head1 VERSION
 
-Version 0.01
+Version 0.02
 
 =cut
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 =head1 SYNOPSIS
 
@@ -46,7 +46,6 @@ sub new {
 				};
 	
 	bless $self, $class;
-	return $self;
 }
 
 =head2 $client->request($rawxml)
@@ -60,6 +59,7 @@ sub request {
 	my $xml = shift;
 
 	my $req = HTTP::Request->new(POST => $self->{'endpoint'});
+	$req->header( SOAPAction => '""' );
 	$req->content_type('text/xml; charset=UTF-8');
 	$req->content($xml);
 	$req->content_length(length($xml));
