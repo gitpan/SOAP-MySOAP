@@ -10,11 +10,11 @@ SOAP::MySOAP - An extremely basic SOAP client module
 
 =head1 VERSION
 
-Version 0.02
+Version 0.023
 
 =cut
 
-our $VERSION = '0.02';
+our $VERSION = '0.023';
 
 =head1 SYNOPSIS
 
@@ -36,6 +36,7 @@ Creates a SOAP::MySOAP object, a SOAP client that can issue SOAP requests to the
 sub new {
 	my $class = shift;
 	my $endpoint = shift;
+	my $params = shift || {};
 
 	my $ua = LWP::UserAgent->new;
 	$ua->agent("MySOAP/0.1 ");
@@ -43,6 +44,7 @@ sub new {
 	my $self = {
 					endpoint => $endpoint,
 					ua => $ua,
+					%$params,
 				};
 	
 	bless $self, $class;
@@ -63,10 +65,16 @@ sub request {
 	$req->content_type('text/xml; charset=UTF-8');
 	$req->content($xml);
 	$req->content_length(length($xml));
+	if ($self->{'debug'}) {
+		print $req->as_string;
+	}
 
 	$self->{'request'} = $req;
 	my $res = $self->{'ua'}->request($req);
 	$self->{'response'} = $res;
+	if ($self->{'debug'}) {
+		print $res->as_string;
+	}
 	return $res->content;
 }
 

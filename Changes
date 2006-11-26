@@ -1,5 +1,8 @@
 Revision history for SOAP-MySOAP
 
+0.023	Nov 26th, 2006
+		Fixed a bug
+
 0.02	Nov 26th, 2006
 		Added SOAPAction header
 
